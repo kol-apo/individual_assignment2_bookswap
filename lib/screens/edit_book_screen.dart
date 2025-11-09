@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/firestore_service.dart';
 
 class EditBookScreen extends StatefulWidget {
@@ -57,13 +56,19 @@ class _EditBookScreenState extends State<EditBookScreen> {
         });
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Failed to pick image: $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick image: $e')),
+      );
     }
   }
 
   Future<void> _handleUpdate() async {
     if (_titleController.text.trim().isEmpty || _authorController.text.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please fill in required fields');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in required fields')),
+      );
       return;
     }
 
@@ -80,19 +85,25 @@ class _EditBookScreenState extends State<EditBookScreen> {
       swapFor: _swapForController.text.trim().isEmpty ? null : _swapForController.text.trim(),
     );
 
+    if (!mounted) return;
+
     setState(() => _isLoading = false);
 
     if (error == null) {
-      Fluttertoast.showToast(
-        msg: 'Book updated successfully!',
-        backgroundColor: Colors.green,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Book updated successfully!'),
+          backgroundColor: Colors.green,
+        ),
       );
-        if (!mounted) return;
+      if (!mounted) return;
       Navigator.pop(context);
     } else {
-      Fluttertoast.showToast(
-        msg: error,
-        backgroundColor: Colors.red,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }

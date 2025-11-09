@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/auth_service.dart';
 import 'signup_screen.dart';
 
@@ -26,7 +25,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleLogin() async {
     if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please fill in all fields');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
       return;
     }
 
@@ -38,13 +40,17 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text,
     );
 
+    if (!mounted) return;
+
     setState(() => _isLoading = false);
 
     if (error != null) {
-      Fluttertoast.showToast(
-        msg: error,
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.red,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
       );
     }
   }
@@ -64,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha:0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Icon(

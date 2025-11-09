@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/auth_service.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -57,7 +56,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (confirmed == true) {
       final authService = Provider.of<AuthService>(context, listen: false);
       await authService.signOut();
-      Fluttertoast.showToast(msg: 'Signed out successfully');
+       if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Signed out successfully')),
+    );
     }
   }
 
@@ -129,10 +131,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     setState(() {
                       _notificationReminders = value;
                     });
-                    Fluttertoast.showToast(
-                      msg: value
-                          ? 'Notification reminders enabled'
-                          : 'Notification reminders disabled',
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(value
+                            ? 'Notification reminders enabled'
+                            : 'Notification reminders disabled'),
+                        duration: const Duration(seconds: 2),
+                      ),
                     );
                   },
                   activeThumbColor: const Color(0xFFE8B834),
@@ -145,8 +150,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     setState(() {
                       _emailUpdates = value;
                     });
-                    Fluttertoast.showToast(
-                      msg: value ? 'Email updates enabled' : 'Email updates disabled',
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(value 
+                            ? 'Email updates enabled' 
+                            : 'Email updates disabled'),
+                        duration: const Duration(seconds: 2),
+                      ),
                     );
                   },
                   activeThumbColor: const Color(0xFFE8B834),
@@ -181,7 +191,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Terms of Service'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    Fluttertoast.showToast(msg: 'Terms of Service');
+                   ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Terms of Service')),
+                    );
                   },
                 ),
                 ListTile(
@@ -189,7 +201,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Privacy Policy'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    Fluttertoast.showToast(msg: 'Privacy Policy');
+                   ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Privacy Policy')),
+                    );
                   },
                 ),
                 ListTile(
@@ -197,7 +211,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Help & Support'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    Fluttertoast.showToast(msg: 'Help & Support');
+                   ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Help & Support')),
+                    );
                   },
                 ),
               ],

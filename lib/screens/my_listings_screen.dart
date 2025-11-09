@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/firestore_service.dart';
 import 'post_book_screen.dart';
 import 'edit_book_screen.dart';
@@ -345,16 +344,22 @@ class MyListingsScreen extends StatelessWidget {
               final firestoreService = Provider.of<FirestoreService>(context, listen: false);
               final error = await firestoreService.deleteBook(book.id);
               
+               if (!context.mounted) return;
+               
               if (error == null) {
-                Fluttertoast.showToast(
-                  msg: 'Book deleted successfully',
+                ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Book deleted successfully'),
                   backgroundColor: Colors.green,
-                );
+                ),
+              );
               } else {
-                Fluttertoast.showToast(
-                  msg: error,
+               ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(error),
                   backgroundColor: Colors.red,
-                );
+                ),
+              );
               }
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),

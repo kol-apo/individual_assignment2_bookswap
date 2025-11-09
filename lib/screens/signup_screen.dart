@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -32,17 +31,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_nameController.text.trim().isEmpty ||
         _emailController.text.trim().isEmpty ||
         _passwordController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please fill in all fields');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
       return;
     }
 
     if (_passwordController.text != _confirmPasswordController.text) {
-      Fluttertoast.showToast(msg: 'Passwords do not match');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
       return;
     }
 
     if (_passwordController.text.length < 6) {
-      Fluttertoast.showToast(msg: 'Password must be at least 6 characters');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password must be at least 6 characters')),
+      );
       return;
     }
 
@@ -55,21 +63,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       name: _nameController.text.trim(),
     );
 
+    if (!mounted) return;
+
     setState(() => _isLoading = false);
 
     if (error == null) {
-      Fluttertoast.showToast(
-        msg: 'Account created! Please verify your email before logging in.',
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.green,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Account created! Please verify your email before logging in.'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 4),
+        ),
       );
       if (!mounted) return;
       Navigator.pop(context);
     } else {
-      Fluttertoast.showToast(
-        msg: error,
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.red,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
       );
     }
   }
@@ -93,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha:0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(

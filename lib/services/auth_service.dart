@@ -45,35 +45,41 @@ class AuthService extends ChangeNotifier {
   }
 
   // Sign In
-  Future<String?> signIn({
-    required String email,
-    required String password,
-  }) async {
+Future<String?> signIn({
+  required String email,
+  required String password,
+}) async {
+  try {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Check if email is verified
+    await userCredential.user?.reload();
+    if (!(userCredential.user?.emailVerified ?? false)) {
+      await _auth.signOut();
+      return 'Please verify your email before logging in. Check your inbox.';
+    }
+
+    // Update email verification status in Firestore (non-critical)
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      // Check if email is verified
-      await userCredential.user?.reload();
-      if (!(userCredential.user?.emailVerified ?? false)) {
-        return 'Please verify your email before logging in. Check your inbox.';
-      }
-
-      // Update email verification status in Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).update({
         'emailVerified': true,
       });
-
-      notifyListeners();
-      return null; // Success
-    } on FirebaseAuthException catch (e) {
-      return e.message ?? 'An error occurred during sign in';
-    } catch (e) {
-      return 'An unexpected error occurred';
+    } catch (firestoreError) {
+      // Ignore Firestore errors - authentication still succeeded
+      print('Firestore update failed (non-critical): $firestoreError');
     }
+
+    notifyListeners();
+    return null; // Success
+  } on FirebaseAuthException catch (e) {
+    return e.message ?? 'An error occurred during sign in';
+  } catch (e) {
+    return 'An unexpected error occurred';
   }
+}
 
   // Sign Out
   Future<void> signOut() async {

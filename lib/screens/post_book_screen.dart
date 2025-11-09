@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../services/firestore_service.dart';
 
 class PostBookScreen extends StatefulWidget {
@@ -45,13 +44,19 @@ class _PostBookScreenState extends State<PostBookScreen> {
         });
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Failed to pick image: $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick image: $e')),
+      );
     }
   }
 
   Future<void> _handlePost() async {
     if (_titleController.text.trim().isEmpty || _authorController.text.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please fill in required fields');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in required fields')),
+      );
       return;
     }
 
@@ -59,29 +64,33 @@ class _PostBookScreenState extends State<PostBookScreen> {
 
     final firestoreService = Provider.of<FirestoreService>(context, listen: false);
     
-    // Note: For simplicity, we're not uploading the image to Firebase Storage
-    // In a production app, you would upload the image and get a URL
     final error = await firestoreService.createBook(
       title: _titleController.text.trim(),
       author: _authorController.text.trim(),
       condition: _selectedCondition,
-      imageUrl: null, // Would be the uploaded image URL
+      imageUrl: null,
       swapFor: _swapForController.text.trim().isEmpty ? null : _swapForController.text.trim(),
     );
+
+    if (!mounted) return;
 
     setState(() => _isLoading = false);
 
     if (error == null) {
-      Fluttertoast.showToast(
-        msg: 'Book posted successfully!',
-        backgroundColor: Colors.green,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Book posted successfully!'),
+          backgroundColor: Colors.green,
+        ),
       );
-        if (!mounted) return;
+      if (!mounted) return;
       Navigator.pop(context);
     } else {
-      Fluttertoast.showToast(
-        msg: error,
-        backgroundColor: Colors.red,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
