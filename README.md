@@ -267,22 +267,7 @@ flutter build apk
 flutter build ios
 ```
 
-## 📸 Screenshots
-
-Add screenshots of:
-1. Splash screen
-2. Login/Signup
-3. Browse listings
-4. Book details
-5. Post book
-6. My listings
-7. Chat screen
-8. Settings
 
 ## 📄 License
 
 This is an academic project for Individual Assignment 2.
-
----
-
-**Note**: This is the complete frontend implementation. All UI components are functional with dummy data. The next phase is Firebase integration to make all features fully operational with real-time data synchronization.
