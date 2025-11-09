@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_theme.dart';
 
 class ChatsScreen extends StatelessWidget {
   const ChatsScreen({super.key});
@@ -16,23 +15,28 @@ class ChatsScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.chat_bubble_outline,
-              size: 64,
-              color: Colors.grey.shade400,
+              size: 80,
+              color: Colors.grey[400],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text(
-              'No conversations yet',
+              'No Chats Yet',
               style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey.shade600,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[700],
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Start swapping to chat with others',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade500,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 48),
+              child: Text(
+                'Start a swap to begin chatting with other students',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
               ),
             ),
           ],

@@ -1,5 +1,5 @@
-name: individual_assignment_2_bookswap
-description: A book swapping marketplace for students
+name: bookswap_app
+description: A BookSwap marketplace app for students
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,25 +10,29 @@ dependencies:
   flutter:
     sdk: flutter
   
-  # Firebase
-  firebase_core: ^4.2.1
-  firebase_auth: ^5.3.3
-  cloud_firestore: ^5.5.2
-  firebase_storage: ^12.3.7
+  # Firebase - Compatible versions
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.20.0
+  cloud_firestore: ^4.17.5
+  firebase_storage: ^11.7.7
   
   # State Management
-  flutter_riverpod: ^2.6.1
+  provider: ^6.1.2
   
-  # UI & Utils
+  # UI
+  cupertino_icons: ^1.0.8
   image_picker: ^1.1.2
+  cached_network_image: ^3.3.1
   intl: ^0.19.0
   
-  cupertino_icons: ^1.0.6
+  # Utils
+  fluttertoast: ^8.2.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
+  
