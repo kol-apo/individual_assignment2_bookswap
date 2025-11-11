@@ -2,6 +2,12 @@
 
 A mobile marketplace application where students can list textbooks they wish to exchange and browse books posted by other students. Built with Flutter and Firebase for real-time synchronization.
 
+![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![Dart](https://img.shields.io/badge/Dart-0175C2?logo=dart)
+
+---
+
 ## ✨ Features
 
 ### Implemented Features ✅
@@ -57,7 +63,7 @@ A mobile marketplace application where students can list textbooks they wish to 
 
 1. **Clone the repository**
 ```bash
-   git clone https://github.com/kol-apo/individual_assignment2_bookswap.git
+   git clone https://github.com/yourusername/bookswap_app.git
    cd bookswap_app
 ```
 
@@ -448,6 +454,6 @@ This project is for educational purposes.
 
 ---
 
-*Built with ❤️ using Flutter and Firebase*
+*Built with using Flutter and Firebase*
 
 Last Updated: November 9, 2025
